@@ -1,28 +1,45 @@
 #include <iostream>
 #include <DTLib/ListGraph.h>
 #include <DTLib/Exception.h>
-#include <DTLib/RangeArray.h>
+#include <DTLib/DualEndQueue.h>
 
 using namespace std;
 using namespace DTLib;
 
+bool IsSym(int n)
+{
+    DualEndQueue<int> q;
+
+    if (n < 0)
+    {
+        n = -n;
+    }
+
+    while (n)
+    {
+        q.add(n % 10);
+        n /= 10;
+    }
+
+    while ((q.length() > 1) && (q.front() == q.back()))
+    {
+        q.remove();
+        q.dismiss();
+    }
+    
+    return (q.length() <= 1);
+    
+}
 
 int main() {
 
     try
     {
-        RangeArray<double> ra(-5,10);
-        for (int i = ra.lower(); i <= ra.upper(); i++)
-        {
-            ra[i] = i / 100.0;
-        }
-
-        for (int i = ra.lower(); i <= ra.upper(); i++)
-        {
-            cout << ra[i] << endl;
-        }
-        
-        return 0;
+        cout << IsSym(121) << endl;
+        cout << IsSym(2332) << endl;
+        cout << IsSym(11) << endl;
+        cout << IsSym(2) << endl;
+        cout << IsSym(321) << endl;
     }
     catch(const Exception& e)
     {
